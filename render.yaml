@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: vortex-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_APP_NAME
+        value: VORTEX PLATINUM
+
+  - type: web
+    name: vortex-backend
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: vortex-db
+          envVarKey: DATABASE_URL
+
+  - type: pserv
+    name: vortex-db
+    env: postgres
+    region: frankfurt
+    plan: free
