@@ -15,19 +15,16 @@ services:
     plan: free
     buildCommand: cd backend && npm install
     startCommand: node index.js
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: DATABASE_URL
-        fromService:
-          type: pserv
-          name: vortex-db
-          envVarKey: DATABASE_URL
 
   - type: pserv
     name: vortex-db
     env: postgres
     region: frankfurt
     plan: free
+  
